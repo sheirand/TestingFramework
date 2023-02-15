@@ -1,0 +1,17 @@
+{
+    "browser": {
+        "chrome": {
+            "name": "chrome",
+            "mode": {
+                "incognito": "--incognito"
+            }
+        },
+        "firefox": {
+            "name": "firefox"
+        }
+    },
+    "waits": {
+        "long": 3000,
+        "short": 300
+    }
+}
