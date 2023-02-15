@@ -1,0 +1,27 @@
+{
+  "name": "task3",
+  "version": "1.0.0",
+  "description": "e.osakovich",
+  "main": "index.js",
+  "devDependencies": {
+    "mocha": "^10.2.0"
+  },
+  "scripts": {
+    "test": "mocha --timeout 9000"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/a1qa-education-L1/e.osakovich.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/a1qa-education-L1/e.osakovich/issues"
+  },
+  "homepage": "https://github.com/a1qa-education-L1/e.osakovich#readme",
+  "dependencies": {
+    "chai": "^4.3.7",
+    "chromedriver": "^110.0.0",
+    "geckodriver": "^3.2.0"
+  }
+}
