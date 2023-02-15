@@ -13,3 +13,7 @@ class BaseForm{
         return BaseForm.#driver.elementIsDisplayed(this.uniqLocator);
     }
 };
+
+module.exports = {
+    BaseForm
+};

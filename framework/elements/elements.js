@@ -25,6 +25,10 @@ class BaseElement{
 
 };
 
+class Button extends BaseElement{
+};
+
 module.exports = {
-    BaseElement
+    BaseElement,
+    Button
 };
