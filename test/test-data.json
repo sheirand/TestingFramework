@@ -1,0 +1,9 @@
+{
+    "alerts": {
+        "alertText": "You clicked a button",
+        "confirmText": "Do you confirm action?",
+        "confirmResultText": "You selected Ok",
+        "promptMessage": "Please enter your name",
+        "lenRandomText": 12
+    }
+}

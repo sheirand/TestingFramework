@@ -1,4 +1,4 @@
-const { Builder } = require('selenium-webdriver');
+const { Builder, until } = require('selenium-webdriver');
 const Chrome = require('selenium-webdriver/chrome');
 const Firefox = require('selenium-webdriver/firefox');
 const cfg = require('../../config.json');
@@ -70,6 +70,15 @@ class BrowserFactory{
     static async scrollDownPage(){
         await this.driver.executeScript("window.scrollBy(0,250)", "");
     }
+
+    static async scrollToElement(element){
+        await this.driver.executeScript("arguments[0].scrollIntoView(true);", element)
+    }
+
+    static async getAlert(){
+            let alert = await this.driver.switchTo().alert();
+            return alert;
+        }
 
     static async quit(){
         await this.driver.quit();

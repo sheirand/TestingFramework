@@ -13,5 +13,8 @@
     "waits": {
         "long": 3000,
         "short": 300
+    },
+    "testing": {
+        "url": "https://demoqa.com/"
     }
 }

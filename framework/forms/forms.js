@@ -9,7 +9,7 @@ class BaseForm{
         this.uniqLocator = uniqLocator           
     }
 
-    isPageOpened(){
+    async isPageOpened(){
         return BaseForm.#driver.elementIsDisplayed(this.uniqLocator);
     }
 };

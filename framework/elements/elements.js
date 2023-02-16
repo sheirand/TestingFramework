@@ -10,17 +10,17 @@ class BaseElement{
         this.uniqLocator = uniqLocator;
     }
 
-    getElement(){
-        return BaseElement.#driver.findElement(this.uniqLocator);
+    async getElement(){
+        return await BaseElement.#driver.findElement(this.uniqLocator);
     }
 
-    isPresent(){
-        return BaseElement.#driver.elementIsDisplayed(this.uniqLocator);
+    async isPresent(){
+        return await BaseElement.#driver.elementIsDisplayed(this.uniqLocator);
     }
 
-    click(){
-        this.isPresent();
-        return this.getElement().click();
+    async click(){
+        await BaseElement.#driver.scrollToElement(await this.getElement());
+        await (await this.getElement()).click();
     }
 
 };
@@ -28,7 +28,15 @@ class BaseElement{
 class Button extends BaseElement{
 };
 
+class TextField extends BaseElement{
+    async getText(){
+        let text = await (await this.getElement()).getText();
+        return text
+    }
+};
+
 module.exports = {
     BaseElement,
-    Button
+    Button,
+    TextField
 };
