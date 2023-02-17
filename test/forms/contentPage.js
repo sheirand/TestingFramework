@@ -26,7 +26,14 @@ class ContentPage extends BaseForm{
     async goToAlerts(){
         await this.#alertsButton.click();
     }
+    
+    async goToNestedFrames(){
+        await this.#nestedFramesButton.click();
+    }
 
+    async goToFrames(){
+        await this.#framesButton.click();
+    }
 };
 
 module.exports = {

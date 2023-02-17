@@ -5,5 +5,9 @@
         "confirmResultText": "You selected Ok",
         "promptMessage": "Please enter your name",
         "lenRandomText": 12
+    },
+    "iframes":{
+        "outerFrameText": "Parent frame",
+        "innerFrameText": "Child Iframe"
     }
 }

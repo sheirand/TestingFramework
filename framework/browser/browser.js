@@ -80,6 +80,15 @@ class BrowserFactory{
             return alert;
         }
 
+    static async getIframe(arg){
+        let iframe = await this.driver.switchTo().frame(arg);
+        return iframe
+    }
+
+    static async switchToDeafult(){
+        await this.driver.switchTo().defaultContent();
+    }
+
     static async quit(){
         await this.driver.quit();
     }

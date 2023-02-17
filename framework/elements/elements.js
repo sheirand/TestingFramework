@@ -35,8 +35,12 @@ class TextField extends BaseElement{
     }
 };
 
+class IFrame extends BaseElement{
+};
+
 module.exports = {
     BaseElement,
     Button,
-    TextField
+    TextField,
+    IFrame
 };
