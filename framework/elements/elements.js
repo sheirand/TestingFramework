@@ -1,4 +1,5 @@
 const { BrowserFactory } = require('../browser/browser.js');
+const { By } = require('selenium-webdriver');
 
 
 class BaseElement{
@@ -19,6 +20,7 @@ class BaseElement{
     }
 
     async click(){
+        console.info(`${this.name} is clicked!`)
         await BaseElement.#driver.scrollToElement(await this.getElement());
         await (await this.getElement()).click();
     }
@@ -28,7 +30,7 @@ class BaseElement{
 class Button extends BaseElement{
 };
 
-class TextField extends BaseElement{
+class Label extends BaseElement{
     async getText(){
         let text = await (await this.getElement()).getText();
         return text
@@ -38,9 +40,32 @@ class TextField extends BaseElement{
 class IFrame extends BaseElement{
 };
 
+class WebTable extends BaseElement{
+    #driver = BrowserFactory.getInstance();
+    #rowsLocator = By.xpath('//div[contains(@class, "rt-tr-group")]');
+    #colsLocator = By.xpath('.//div[contains(@class, "rt-td")]');
+    
+    async getContent(row, col){
+        let rows = await this.#driver.findElements(this.#rowsLocator);
+        let row_conent = await rows[row].findElements(this.#colsLocator);
+        let content = await row_conent[col].getText();
+        return content
+    }
+};
+
+class TextField extends BaseElement{
+    
+    async sendKeys(keys){
+        (await this.getElement()).sendKeys(keys);
+    }
+
+};
+
 module.exports = {
     BaseElement,
     Button,
-    TextField,
-    IFrame
+    Label,
+    IFrame,
+    WebTable,
+    TextField
 };

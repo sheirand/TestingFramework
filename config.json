@@ -11,7 +11,7 @@
         }
     },
     "waits": {
-        "long": 3000,
+        "long": 5000,
         "short": 300
     },
     "testing": {

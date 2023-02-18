@@ -1,12 +1,12 @@
 const { BaseForm } = require('../../framework/forms/forms.js');
-const { IFrame, TextField } = require('../../framework/elements/elements.js');
+const { IFrame, Label } = require('../../framework/elements/elements.js');
 const { By } = require('selenium-webdriver');
 const { BrowserFactory } = require('../../framework/browser/browser.js');
 
 class FramesForm extends BaseForm{
     upperFrame = new IFrame("Upper Frame", By.id('frame1'));
     lowerFrame = new IFrame("Lower Frame", By.id('frame2'));
-    headingText = new  TextField("Heading Text", By.xpath('//h1[@id="sampleHeading"]'));
+    headingText = new  Label("Heading Text", By.xpath('//h1[@id="sampleHeading"]'));
     #driver = BrowserFactory.getInstance();
 
     constructor(){

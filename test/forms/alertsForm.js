@@ -1,5 +1,5 @@
 const { BaseForm } = require('../../framework/forms/forms.js');
-const { Button, TextField } = require('../../framework/elements/elements.js');
+const { Button, Label } = require('../../framework/elements/elements.js');
 const { By } = require('selenium-webdriver');
 
 
@@ -8,8 +8,8 @@ class AlertsForm extends BaseForm{
     #alertWithDelayButton = new Button("Alert with Delay", By.id("timerAlertButton"));
     #confirmButton = new Button("Confirm", By.id("confirmButton"));
     #promptButton = new Button("Prompt", By.id("promtButton"));
-    #confirmText = new TextField("Confirm Text", By.id("confirmResult"));
-    #promptText = new TextField("Prompt Text", By.id("promptResult"));
+    #confirmText = new Label("Confirm Text", By.id("confirmResult"));
+    #promptText = new Label("Prompt Text", By.id("promptResult"));
 
     constructor(){
         super("Allerts Form", By.xpath('//div[@class="main-header"][contains(text(), "Alerts")]'));

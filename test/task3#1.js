@@ -3,11 +3,14 @@ require('geckodriver');
 const { BrowserFactory } = require('../framework/browser/browser.js');
 const { AlertUtils } = require('../framework/utils/alert-utils.js');
 const { TestingUtils } = require('../framework/utils/testing-utils.js');
+const { Employee } = require('./models/models.js');
 const mainPage = new (require('./forms/mainPage.js')).MainPage();
 const contentPage = new (require('./forms/contentPage.js')).ContentPage();
 const alertForm = new (require('./forms/alertsForm.js')).AlertsForm();
 const nestedFrameForm = new (require('./forms/nestedFramesForm.js')).NestedFramesForm();
 const framesForm = new (require('./forms/framesForm.js')).FramesForm();
+const tablesForm = new (require('./forms/webTablesForm.js')).WebTablesForm();
+const regForm = new (require('./forms/registrationForm.js')).RegistrationForm();
 const assert = require('chai').assert;
 const cfg = require('../config.json');
 const testData = require('./test-data.json');
@@ -100,6 +103,50 @@ describe("Testing https://demoqa.com/", () => {
         await framesForm.switchToDeafultContent();
         assert.equal(upperText, lowerText, "The text is different in lower and upper frames");
     });
+
+    const jsonEmployees = testData.tables.registrationData;
+    jsonEmployees.forEach(({firstName, lastName, age, email, salary, department}) => {
+        it(`Validation of Tables for employee: ${firstName} ${lastName}`, async () => {
+            //navigate to main page
+            await BrowserFactory.getInstance().goToUrl(cfg.testing.url);
+            // main page is open
+            assert.isTrue(await mainPage.isPageOpened(), "MainPage is not opened");
+            // click on elements
+            await mainPage.navigateToElemets();
+            // click on web table
+            await contentPage.goToWebTables();
+            // page with web tables is open
+            assert.isTrue(await tablesForm.isPageOpened(), "Page with web tables is not opened");
+            // click on add
+            await tablesForm.clickOnAdd();
+            // registration form has appeared 
+            assert.isTrue(await regForm.isPageOpened(), "Registration form is not opened");
+            // enter data and click submit
+            let employee = new Employee(
+                firstName,
+                lastName,
+                age,
+                email,
+                salary,
+                department
+            );
+            await regForm.createEmployee(employee);
+            // registration form has closed
+            assert.isTrue(await tablesForm.isPageOpened(), "Registration form is not closed");
+            // data of user has appeared in a table
+            let employees = await tablesForm.getTableRecords();
+            let addedEmployeeIndex = employees.findIndex((addedEmployee) => employee.compare(addedEmployee));
+            assert.isTrue(employee.compare(employees[addedEmployeeIndex]));
+            // click delete button in a row of added data
+            await tablesForm.deleteTableRecord(addedEmployeeIndex);
+            // number of reconrds in table has changed
+            let updatedEmployees = await tablesForm.getTableRecords();
+            assert.notEqual(employees.length, updatedEmployees.length, "Number of records doesn't change");
+            // data has been deleted
+            assert.isFalse(updatedEmployees.some(updatedEmployee => employee.compare(updatedEmployee)), "Employee data was not deleted");
+        });
     
+    });    
+        
 });
 

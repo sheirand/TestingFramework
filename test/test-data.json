@@ -6,8 +6,36 @@
         "promptMessage": "Please enter your name",
         "lenRandomText": 12
     },
-    "iframes":{
+    "iframes": {
         "outerFrameText": "Parent frame",
         "innerFrameText": "Child Iframe"
+    },
+    "tables": {
+        "registrationData": [
+            {
+                "firstName": "Jon",
+                "lastName": "Snow",
+                "age": "30",
+                "email": "knownothing@gmail.com",
+                "salary": "3000",
+                "department": "alpha"
+            },
+            {
+                "firstName": "Buttercup",
+                "lastName": "Cumbersnatch",
+                "age": "41",
+                "email": "BudapestCandygram@mail.io",
+                "salary": "2000",
+                "department": "beta"
+            }
+        ]
+    },
+    "indexes": {
+        "firstName": 0,
+        "lastName": 1,
+        "age": 2,
+        "email": 3,
+        "salary": 4,
+        "department": 5
     }
 }

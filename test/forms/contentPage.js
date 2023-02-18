@@ -34,6 +34,11 @@ class ContentPage extends BaseForm{
     async goToFrames(){
         await this.#framesButton.click();
     }
+
+    async goToWebTables(){
+        await this.#webTablesButton.click();
+    }
+    
 };
 
 module.exports = {
