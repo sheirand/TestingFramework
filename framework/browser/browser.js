@@ -135,7 +135,7 @@ class BrowserFactory{
     }
 
     static async quit(){
-        console.warn("Quiting the browser...")
+        console.warn("Quiting the browser...");
         await this.driver.quit();
         this.instance = undefined;
     }
