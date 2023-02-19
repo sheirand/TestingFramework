@@ -20,9 +20,11 @@ class BaseElement{
     }
 
     async click(){
+        const element = await this.getElement();
         console.info(`${this.name} is clicked!`)
-        await BaseElement.#driver.scrollToElement(await this.getElement());
-        await (await this.getElement()).click();
+        await BaseElement.#driver.scrollToElement(element);
+        await BaseElement.#driver.elementIsDisplayed(this.uniqLocator);
+        await element.click();
     }
 
 };
@@ -31,7 +33,9 @@ class Button extends BaseElement{
 };
 
 class Label extends BaseElement{
+    
     async getText(){
+        console.log('blabal')
         let text = await (await this.getElement()).getText();
         return text
     }

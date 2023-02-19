@@ -4,9 +4,9 @@ const { By } = require('selenium-webdriver');
 const { BrowserFactory } = require('../../framework/browser/browser.js');
 
 class FramesForm extends BaseForm{
-    upperFrame = new IFrame("Upper Frame", By.id('frame1'));
-    lowerFrame = new IFrame("Lower Frame", By.id('frame2'));
-    headingText = new  Label("Heading Text", By.xpath('//h1[@id="sampleHeading"]'));
+    #upperFrameLocator = By.id('frame1');
+    #lowerFrameLocator = By.id('frame2');
+    #headingText = new  Label("Heading Text", By.xpath('//h1[@id="sampleHeading"]'));
     #driver = BrowserFactory.getInstance();
 
     constructor(){

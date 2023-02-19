@@ -5,19 +5,25 @@ const { AlertUtils } = require('../framework/utils/alert-utils.js');
 const { TestingUtils } = require('../framework/utils/testing-utils.js');
 const { Employee } = require('./models/models.js');
 const mainPage = new (require('./forms/mainPage.js')).MainPage();
-const contentPage = new (require('./forms/contentPage.js')).ContentPage();
+const contentMenu = new (require('./forms/contentPage.js')).ContentMenuForm();
 const alertForm = new (require('./forms/alertsForm.js')).AlertsForm();
 const nestedFrameForm = new (require('./forms/nestedFramesForm.js')).NestedFramesForm();
 const framesForm = new (require('./forms/framesForm.js')).FramesForm();
 const tablesForm = new (require('./forms/webTablesForm.js')).WebTablesForm();
 const regForm = new (require('./forms/registrationForm.js')).RegistrationForm();
+const browserWindowsForm = new (require('./forms/browserWindowsForm.js')).BrowserWindowsForm();
+const sampleWindowForm = new (require('./forms/sampleWindowForm.js')).SampleWindowForm();
+const linksForm = new (require('./forms/linksForm.js')).LinksForm();
 const assert = require('chai').assert;
 const cfg = require('../config.json');
 const testData = require('./test-data.json');
 
 describe("Testing https://demoqa.com/", () => {    
 
-    beforeEach(() => BrowserFactory.getInstance().initDriver(cfg.browser.chrome.name));
+    beforeEach(() => {
+        BrowserFactory.getInstance().initDriver(cfg.browser.chrome.name);
+        BrowserFactory.getInstance().maximizeWindow();
+    });
     afterEach(() => BrowserFactory.getInstance().quit());
 
 
@@ -30,7 +36,7 @@ describe("Testing https://demoqa.com/", () => {
         // click on Alerts, Frame & Windows button
         await mainPage.navigateToAlertsFrameWindows();
         // in a menu clock Alerts button
-        await contentPage.goToAlerts();
+        await contentMenu.goToAlerts();
         // allerts form has appeared on page
         assert.isTrue(await alertForm.isPageOpened(), "Alert form has not appeared on page");
         // Click on allert button
@@ -79,7 +85,7 @@ describe("Testing https://demoqa.com/", () => {
         //click alerts frame windows
         await mainPage.navigateToAlertsFrameWindows();
         //click nested frames
-        await contentPage.goToNestedFrames();
+        await contentMenu.goToNestedFrames();
         //page with nested frames form is open
         assert.isTrue(await nestedFrameForm.isPageOpened(), "Nested Frames form hasn't appeared on page");
         // there are messages Parent frame Child iframe
@@ -91,7 +97,7 @@ describe("Testing https://demoqa.com/", () => {
         await nestedFrameForm.switchToDeafultContent();
         assert.equal(innerText, testData.iframes.innerFrameText, "Child frame message did not appear");
         // select frames option in a left menu
-        await contentPage.goToFrames();
+        await contentMenu.goToFrames();
         // page with frames is open
         assert.isTrue(await framesForm.isPageOpened(), "Frames form hasn't appeared on page");
         // message from uppe frame is eqaul to the message from lower frame
@@ -114,7 +120,7 @@ describe("Testing https://demoqa.com/", () => {
             // click on elements
             await mainPage.navigateToElemets();
             // click on web table
-            await contentPage.goToWebTables();
+            await contentMenu.goToWebTables();
             // page with web tables is open
             assert.isTrue(await tablesForm.isPageOpened(), "Page with web tables is not opened");
             // click on add
@@ -147,6 +153,45 @@ describe("Testing https://demoqa.com/", () => {
         });
     
     });    
+
+    it('Validation of Handles', async () => {
+        // navigate to main page
+        await BrowserFactory.getInstance().goToUrl(cfg.testing.url);
+        // main page is open
+        assert.isTrue(await mainPage.isPageOpened(), "Main Page is not opened");
+        // click on alerts frame and windows
+        await mainPage.navigateToAlertsFrameWindows();
+        // in the menu click browser windows
+        await contentMenu.goToBrowserWindows();
+        // page with browser windows form is open
+        assert.isTrue(await browserWindowsForm.isPageOpened(), "Browser Windows Form is not opened");
+        
+        let originalWindowHandle = await BrowserFactory.getInstance().getCurrentWindowHandle();
+        // click on new tab button
+        await browserWindowsForm.openNewTab();
+        await BrowserFactory.getInstance().switchToNewOpenedTab(originalWindowHandle);
+        // new tab with sample page is open
+        assert.isTrue(await sampleWindowForm.isPageOpened(), "Sample window form is not opened");
+        // close current tab
+        await BrowserFactory.getInstance().closeCurrentWindow();
+        // page with browser windows form is open
+        await BrowserFactory.swithToWindow(originalWindowHandle);
+        assert.isTrue(await browserWindowsForm.isPageOpened(), "Browser Windows Form is not opened");
+        // in the menu click elements - links
+        await contentMenu.goToLinks();
+        // page with links form is open
+        assert.isTrue(await linksForm.isPageOpened(), "Links form is not opened");
+        // click on home link
+        await linksForm.goToHomePage();
+        originalWindowHandle = await BrowserFactory.getInstance().getCurrentWindowHandle();
+        await BrowserFactory.getInstance().switchToNewOpenedTab(originalWindowHandle);        
+        // new tab with main page is open
+        assert.isTrue(await mainPage.isPageOpened(), "Main Page is not opened");
+        // resume to previous tab
+        await BrowserFactory.swithToWindow(originalWindowHandle);
+        // page with links form is open
+        assert.isTrue(await linksForm.isPageOpened(), "Link form is not opened");
+    });
         
 });
 

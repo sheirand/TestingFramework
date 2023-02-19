@@ -15,23 +15,25 @@ class BrowserFactory{
 
     static initDriver(browser, args){
         switch(browser){
-            case cfg.browser.chrome.name:
+            case cfg.browser.chrome.name: {
                 this.options = new Chrome.Options();
                 if (args) this.options = this.options.addArguments(args);
                 this.driver = new Builder()
                 .forBrowser(browser).setChromeOptions(this.options)
                 .build();
                 break;
-            case cfg.browser.firefox.name:
+            };
+            case cfg.browser.firefox.name: {
                 this.options = new Firefox.Options();
                 if (args) this.options = this.options.addArguments(args);
                  this.driver = new Builder()
                  .forBrowser(browser).setFirefoxOptions(this.options)
                  .build();
                  break;
+            };
             default:
                 throw new Error("Incorrect Browsername");
-        }   
+        };   
     }
 
     static async getTitle(){
@@ -39,10 +41,27 @@ class BrowserFactory{
         return title;
     }
 
-    static async switchToOpenedTab(num){
-        let list = await this.driver.getAllWindowHandles();
-        await this.driver.switchTo().window(list[num]);
+    static async getCurrentWindowHandle(){
+        return await this.driver.getWindowHandle();
     }
+
+    static async switchToNewOpenedTab(originalWindowHandle){
+        await this.driver.wait(
+            async () => (await this.driver.getAllWindowHandles()).length === 2,
+            10000
+        );
+        const windows = await this.driver.getAllWindowHandles();
+        windows.forEach(async handle => {
+            if (handle !== originalWindowHandle) {
+                await this.driver.switchTo().window(handle);
+            }
+        });
+    }
+
+    static async swithToWindow(windowHandle){
+        await this.driver.switchTo().window(windowHandle);
+    }
+
 
     static async applyImplicitWaits(value){
         await this.driver.manage().setTimeouts({implicit: value});
@@ -54,8 +73,10 @@ class BrowserFactory{
     }
 
     static async elementIsDisplayed(locator){
-        let isDisplayed = await this.driver.wait(until.elementLocated(locator), cfg.waits.long).isDisplayed();
-        return isDisplayed;
+        let element = await this.driver.wait(until.elementLocated(locator), cfg.waits.long);
+        await this.driver.wait(until.elementIsVisible(element), cfg.waits.long);
+        let isClickable = await this.driver.wait(until.elementIsEnabled(element), cfg.waits.long);
+        return await isClickable.isDisplayed();
     }
 
     static async findElements(locator){
@@ -87,6 +108,14 @@ class BrowserFactory{
 
     static async switchToDeafult(){
         await this.driver.switchTo().defaultContent();
+    }
+
+    static async closeCurrentWindow(){
+        await this.driver.close();
+    }
+
+    static async maximizeWindow(){
+        await this.driver.manage().window().maximize();
     }
 
     static async quit(){
