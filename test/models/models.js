@@ -1,6 +1,7 @@
 const { TestingUtils } = require('../../framework/utils/testing-utils.js');
 
 class Employee{
+    
     constructor(firstName, lastName, age, email, salary, department){
         this.firstName = firstName;
         this.lastName = lastName;

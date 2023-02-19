@@ -18,10 +18,11 @@ const assert = require('chai').assert;
 const cfg = require('../config.json');
 const testData = require('./test-data.json');
 
+
 describe("Testing https://demoqa.com/", () => {    
 
     beforeEach(() => {
-        BrowserFactory.getInstance().initDriver(cfg.browser.chrome.name);
+        BrowserFactory.getInstance();
         BrowserFactory.getInstance().maximizeWindow();
     });
     afterEach(() => BrowserFactory.getInstance().quit());
@@ -29,105 +30,106 @@ describe("Testing https://demoqa.com/", () => {
 
     it('Validation of Alerts', async () => {
 
-        // navigate to MainPage
         await BrowserFactory.getInstance().goToUrl(cfg.testing.url);
-        // assert if MainPage is opened
+
         assert.isTrue(await mainPage.isPageOpened(), "MainPage is not opened");
-        // click on Alerts, Frame & Windows button
+        
         await mainPage.navigateToAlertsFrameWindows();
-        // in a menu clock Alerts button
         await contentMenu.goToAlerts();
-        // allerts form has appeared on page
+        
         assert.isTrue(await alertForm.isPageOpened(), "Alert form has not appeared on page");
-        // Click on allert button
+        
         await alertForm.clickAllert();
-        // allert with text is opened
         let alertMessage = await AlertUtils.getMessage();
+        
         assert.equal(alertMessage, testData.alerts.alertText, "Alert text is different");
-        // click ok button
+        
         await AlertUtils.accept();
-        // allert has closed
+        
         assert.isTrue(await alertForm.isPageOpened(), "Alert hasn't been closed")
-        // click on confirm 
+        
         await alertForm.clickConfirm();
-        // allert with text is open "Do you confirm action?"
         let confirmMessage = await AlertUtils.getMessage();
+        
         assert.equal(confirmMessage, testData.alerts.confirmText, 'Confirmation text is different');
-        //click ok
+        
         await AlertUtils.accept();
-        //alert has closed
+        
         assert.isTrue(await alertForm.isPageOpened(), "Confirmation box hasn't been closed");
-        //Text "You selected OK" has appeared on page
+        
         let confirmResultMessage = await alertForm.getConfirmResultText(); 
+        
         assert.equal(confirmResultMessage, testData.alerts.confirmResultText, "Confirm result text is different");
-        // click on prompt
+        
         await alertForm.clickPrompt();
-        // alert with text "Please enter your name" is open
         let promptMessage = await AlertUtils.getMessage();
+        
         assert.equal(promptMessage, testData.alerts.promptMessage, "Prompt message is different");
-        // enter randomlygenerated text
+        
         let randomText = TestingUtils.genRandomText(testData.alerts.lenRandomText);
         await AlertUtils.sendText(randomText);
-        // click ok
         await AlertUtils.accept();
-        // alert is closed
+        
         assert.isTrue(await alertForm.isPageOpened(), "Prompt box hasn't been closed");
-        // appeared text equals to the one you've entered
+        
         let promptResultMessage = await alertForm.getPromptResultText();
+        
         assert.equal(promptResultMessage, "You entered " + randomText, "Prompt result text is different");
     });
 
     it('Validation of IFrame', async () => {
-        //navigate to mainpage
+        
         await BrowserFactory.getInstance().goToUrl(cfg.testing.url);
-        //mainpage is open
+        
         assert.isTrue(await mainPage.isPageOpened(), "MainPage is not opened");
-        //click alerts frame windows
+        
         await mainPage.navigateToAlertsFrameWindows();
-        //click nested frames
         await contentMenu.goToNestedFrames();
-        //page with nested frames form is open
+        
         assert.isTrue(await nestedFrameForm.isPageOpened(), "Nested Frames form hasn't appeared on page");
-        // there are messages Parent frame Child iframe
+        
         await nestedFrameForm.switchToOuterIFrame();
         let outerText = await nestedFrameForm.getBodyText();
+        
         assert.equal(outerText, testData.iframes.outerFrameText, "Parrent frame message did not appear");
+        
         await nestedFrameForm.switchToInnerIFrame();
         let innerText = await nestedFrameForm.getBodyText();
         await nestedFrameForm.switchToDeafultContent();
+        
         assert.equal(innerText, testData.iframes.innerFrameText, "Child frame message did not appear");
-        // select frames option in a left menu
+        
         await contentMenu.goToFrames();
-        // page with frames is open
+        
         assert.isTrue(await framesForm.isPageOpened(), "Frames form hasn't appeared on page");
-        // message from uppe frame is eqaul to the message from lower frame
+        
         await framesForm.switchToUpperFrame();
         let upperText = await framesForm.getText();
         await framesForm.switchToDeafultContent();
         await framesForm.switchToLowerFrame();
         let lowerText = await framesForm.getText();
         await framesForm.switchToDeafultContent();
+        
         assert.equal(upperText, lowerText, "The text is different in lower and upper frames");
     });
 
     const jsonEmployees = testData.tables.registrationData;
     jsonEmployees.forEach(({firstName, lastName, age, email, salary, department}) => {
         it(`Validation of Tables for employee: ${firstName} ${lastName}`, async () => {
-            //navigate to main page
+            
             await BrowserFactory.getInstance().goToUrl(cfg.testing.url);
-            // main page is open
+            
             assert.isTrue(await mainPage.isPageOpened(), "MainPage is not opened");
-            // click on elements
+            
             await mainPage.navigateToElemets();
-            // click on web table
             await contentMenu.goToWebTables();
-            // page with web tables is open
+            
             assert.isTrue(await tablesForm.isPageOpened(), "Page with web tables is not opened");
-            // click on add
+            
             await tablesForm.clickOnAdd();
-            // registration form has appeared 
+            
             assert.isTrue(await regForm.isPageOpened(), "Registration form is not opened");
-            // enter data and click submit
+            
             let employee = new Employee(
                 firstName,
                 lastName,
@@ -137,61 +139,58 @@ describe("Testing https://demoqa.com/", () => {
                 department
             );
             await regForm.createEmployee(employee);
-            // registration form has closed
+            
             assert.isTrue(await tablesForm.isPageOpened(), "Registration form is not closed");
-            // data of user has appeared in a table
+            
             let employees = await tablesForm.getTableRecords();
             let addedEmployeeIndex = employees.findIndex((addedEmployee) => employee.compare(addedEmployee));
+            
             assert.isTrue(employee.compare(employees[addedEmployeeIndex]));
-            // click delete button in a row of added data
+            
             await tablesForm.deleteTableRecord(addedEmployeeIndex);
-            // number of reconrds in table has changed
             let updatedEmployees = await tablesForm.getTableRecords();
+            
             assert.notEqual(employees.length, updatedEmployees.length, "Number of records doesn't change");
-            // data has been deleted
             assert.isFalse(updatedEmployees.some(updatedEmployee => employee.compare(updatedEmployee)), "Employee data was not deleted");
         });
     
     });    
 
     it('Validation of Handles', async () => {
-        // navigate to main page
+        
         await BrowserFactory.getInstance().goToUrl(cfg.testing.url);
-        // main page is open
+        
         assert.isTrue(await mainPage.isPageOpened(), "Main Page is not opened");
-        // click on alerts frame and windows
+        
         await mainPage.navigateToAlertsFrameWindows();
-        // in the menu click browser windows
         await contentMenu.goToBrowserWindows();
-        // page with browser windows form is open
+        
         assert.isTrue(await browserWindowsForm.isPageOpened(), "Browser Windows Form is not opened");
         
         let originalWindowHandle = await BrowserFactory.getInstance().getCurrentWindowHandle();
-        // click on new tab button
         await browserWindowsForm.openNewTab();
         await BrowserFactory.getInstance().switchToNewOpenedTab(originalWindowHandle);
-        // new tab with sample page is open
+        
         assert.isTrue(await sampleWindowForm.isPageOpened(), "Sample window form is not opened");
-        // close current tab
+        
         await BrowserFactory.getInstance().closeCurrentWindow();
-        // page with browser windows form is open
         await BrowserFactory.swithToWindow(originalWindowHandle);
+        
         assert.isTrue(await browserWindowsForm.isPageOpened(), "Browser Windows Form is not opened");
-        // in the menu click elements - links
+        
         await contentMenu.goToLinks();
-        // page with links form is open
+        
         assert.isTrue(await linksForm.isPageOpened(), "Links form is not opened");
-        // click on home link
+        
         await linksForm.goToHomePage();
         originalWindowHandle = await BrowserFactory.getInstance().getCurrentWindowHandle();
         await BrowserFactory.getInstance().switchToNewOpenedTab(originalWindowHandle);        
-        // new tab with main page is open
+        
         assert.isTrue(await mainPage.isPageOpened(), "Main Page is not opened");
-        // resume to previous tab
+        
         await BrowserFactory.swithToWindow(originalWindowHandle);
-        // page with links form is open
+        
         assert.isTrue(await linksForm.isPageOpened(), "Link form is not opened");
     });
         
 });
-

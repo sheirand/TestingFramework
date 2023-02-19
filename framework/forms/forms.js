@@ -10,6 +10,7 @@ class BaseForm{
     }
 
     async isPageOpened(){
+        console.info(`Checking if the ${this.name} is opened...`);
         return BaseForm.#driver.elementIsDisplayed(this.uniqLocator);
     }
 };

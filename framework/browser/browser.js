@@ -9,13 +9,15 @@ class BrowserFactory{
     static getInstance(){
         if (!this.instance) {
             this.instance = this;
+            this.initDriver(cfg.browser.name);
         };
         return this.instance;
     }
 
     static initDriver(browser, args){
+        console.warn(`Initializing ${browser} driver...`)
         switch(browser){
-            case cfg.browser.chrome.name: {
+            case "chrome": {
                 this.options = new Chrome.Options();
                 if (args) this.options = this.options.addArguments(args);
                 this.driver = new Builder()
@@ -23,7 +25,7 @@ class BrowserFactory{
                 .build();
                 break;
             };
-            case cfg.browser.firefox.name: {
+            case "firefox": {
                 this.options = new Firefox.Options();
                 if (args) this.options = this.options.addArguments(args);
                  this.driver = new Builder()
@@ -32,25 +34,29 @@ class BrowserFactory{
                  break;
             };
             default:
-                throw new Error("Incorrect Browsername");
+                throw new Error("Incorrect Browsername!");
         };   
     }
 
     static async getTitle(){
+        console.info("Getting webpage title...");
         let title = await this.driver.wait(getTitle());
         return title;
     }
 
     static async getCurrentWindowHandle(){
+        console.info("Getting current window handle...");
         return await this.driver.getWindowHandle();
     }
 
     static async switchToNewOpenedTab(originalWindowHandle){
+        console.info("Checking if the new tab is opened...");
         await this.driver.wait(
             async () => (await this.driver.getAllWindowHandles()).length === 2,
             10000
         );
         const windows = await this.driver.getAllWindowHandles();
+        console.info("Switching to the new tab...")
         windows.forEach(async handle => {
             if (handle !== originalWindowHandle) {
                 await this.driver.switchTo().window(handle);
@@ -59,6 +65,7 @@ class BrowserFactory{
     }
 
     static async swithToWindow(windowHandle){
+        console.info("Switching to the window...");
         await this.driver.switchTo().window(windowHandle);
     }
 
@@ -85,42 +92,52 @@ class BrowserFactory{
     }
 
     static async goToUrl(url){
+        console.info(`Making HTTP request: GET ${url}`);
         await this.driver.get(url);
     }
 
     static async scrollDownPage(){
+        console.info('Scrolling down the page...');
         await this.driver.executeScript("window.scrollBy(0,250)", "");
     }
 
     static async scrollToElement(element){
+        console.info('Scrolling to web element');
         await this.driver.executeScript("arguments[0].scrollIntoView(true);", element)
     }
 
     static async getAlert(){
-            let alert = await this.driver.switchTo().alert();
-            return alert;
-        }
+        console.info("Getting alert...");
+        let alert = await this.driver.switchTo().alert();
+        return alert;
+    }
 
     static async getIframe(locator){
+        console.info("Getting IFrame...");
         let iframeElement = this.driver.findElement(locator); 
         let iframe = await this.driver.switchTo().frame(iframeElement);
         return iframe
     }
 
     static async switchToDeafult(){
+        console.info("Swithing back to default content...");
         await this.driver.switchTo().defaultContent();
     }
 
     static async closeCurrentWindow(){
+        console.info("Closing current window...");
         await this.driver.close();
     }
 
     static async maximizeWindow(){
+        console.info("Maximizing browser window...");
         await this.driver.manage().window().maximize();
     }
 
     static async quit(){
+        console.warn("Quiting the browser...")
         await this.driver.quit();
+        this.instance = undefined;
     }
 };
 

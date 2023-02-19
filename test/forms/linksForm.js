@@ -4,7 +4,6 @@ const { Label } = require('../../framework/elements/elements.js')
 
 
 class LinksForm extends BaseForm{
-
     #homeLink = new Label("Home link", By.id("simpleLink"));
 
     constructor(){

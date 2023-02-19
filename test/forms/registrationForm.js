@@ -3,7 +3,6 @@ const { Button, TextField } = require('../../framework/elements/elements.js');
 const { By } = require('selenium-webdriver');
 
 class RegistrationForm extends BaseForm{
-
     #submitButton = new Button("Submit button", By.id('submit'));
     #firstNameField = new TextField("First name field", By.id('firstName'));
     #lastNameField = new TextField("Last name field", By.id('lastName'));

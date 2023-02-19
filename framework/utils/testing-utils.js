@@ -1,6 +1,7 @@
 class TestingUtils{
     
     static genRandomText(len){
+        console.info(`Generating random ${len}-char text...`);
         let text = "";
         const charset = "qwertyuiopasdfghjklzxcvbnm";
         for(let i=0; i<len; i++){
@@ -10,6 +11,7 @@ class TestingUtils{
     }
 
     static objectsEquality(object1, object2) {
+        console.info(`Checking objects equality...`);
         const keys1 = Object.keys(object1);
         const keys2 = Object.keys(object2);
         if (keys1.length !== keys2.length) {

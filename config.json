@@ -1,14 +1,7 @@
 {
     "browser": {
-        "chrome": {
-            "name": "chrome",
-            "mode": {
-                "incognito": "--incognito"
-            }
-        },
-        "firefox": {
-            "name": "firefox"
-        }
+        "name": "chrome",
+        "mode": "--incognito"
     },
     "waits": {
         "long": 10000,

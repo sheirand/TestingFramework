@@ -4,7 +4,6 @@ const { By } = require('selenium-webdriver');
 
 
 class BrowserWindowsForm extends BaseForm{
-
     #newTabButton = new Button("New Tab Button", By.id("tabButton")); 
 
     constructor(){

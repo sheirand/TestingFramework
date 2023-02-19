@@ -1,12 +1,10 @@
 const { BaseForm } = require('../../framework/forms/forms.js');
 const { Button, WebTable } = require('../../framework/elements/elements.js');
 const { By } = require('selenium-webdriver');
-const { BrowserFactory } = require('../../framework/browser/browser.js');
 const { Employee } = require('../models/models.js');
 const testData = require('../test-data.json');
 
 class WebTablesForm extends BaseForm{
-    #driver = BrowserFactory.getInstance();
     #addButton = new Button("Add button", By.id('addNewRecordButton'));
     #table = new WebTable("Employees Table", By.xpath('//div[contains(@class, "rt-table")]'))
     
