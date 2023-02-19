@@ -101,8 +101,9 @@ class BrowserFactory{
             return alert;
         }
 
-    static async getIframe(arg){
-        let iframe = await this.driver.switchTo().frame(arg);
+    static async getIframe(locator){
+        let iframeElement = this.driver.findElement(locator); 
+        let iframe = await this.driver.switchTo().frame(iframeElement);
         return iframe
     }
 

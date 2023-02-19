@@ -1,12 +1,12 @@
 const { BaseForm } = require('../../framework/forms/forms.js');
-const { IFrame, TextField, Label } = require('../../framework/elements/elements.js');
+const { Label } = require('../../framework/elements/elements.js');
 const { By } = require('selenium-webdriver');
 const { BrowserFactory } = require('../../framework/browser/browser.js');
 
 class NestedFramesForm extends BaseForm{
-    outerFrame = new IFrame("Outer Frame", By.id("frame1"));
-    innerFrame = new IFrame("Innter Frame", By.xpath('//iframe[contains(@srcdoc, "Child")]'));
-    bodyText = new Label("Body Text", By.xpath("//html//body"));
+    #outerFrameLocator = By.id("frame1");
+    #innerFrameLocator = By.xpath('//iframe[contains(@srcdoc, "Child")]');
+    #bodyText = new Label("Body Text", By.xpath("//html//body"));
     #driver = BrowserFactory.getInstance();
 
     constructor(){
@@ -14,15 +14,15 @@ class NestedFramesForm extends BaseForm{
     }
 
     async switchToOuterIFrame(){
-        await this.#driver.getIframe(await this.outerFrame.getElement());
+        await this.#driver.getIframe(this.#outerFrameLocator);
     }
 
     async switchToInnerIFrame(){
-        await this.#driver.getIframe(await this.innerFrame.getElement());
+        await this.#driver.getIframe(this.#innerFrameLocator);
     }
 
     async getBodyText(){
-        return await this.bodyText.getText();
+        return await this.#bodyText.getText();
     }    
 
     async switchToDeafultContent(){

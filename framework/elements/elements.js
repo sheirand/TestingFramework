@@ -41,9 +41,6 @@ class Label extends BaseElement{
     }
 };
 
-class IFrame extends BaseElement{
-};
-
 class WebTable extends BaseElement{
     #driver = BrowserFactory.getInstance();
     #rowsLocator = By.xpath('//div[contains(@class, "rt-tr-group")]');
@@ -69,7 +66,6 @@ module.exports = {
     BaseElement,
     Button,
     Label,
-    IFrame,
     WebTable,
     TextField
 };

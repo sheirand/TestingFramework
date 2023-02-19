@@ -1,12 +1,12 @@
 const { BaseForm } = require('../../framework/forms/forms.js');
-const { IFrame, Label } = require('../../framework/elements/elements.js');
+const { Label } = require('../../framework/elements/elements.js');
 const { By } = require('selenium-webdriver');
 const { BrowserFactory } = require('../../framework/browser/browser.js');
 
 class FramesForm extends BaseForm{
     #upperFrameLocator = By.id('frame1');
     #lowerFrameLocator = By.id('frame2');
-    #headingText = new  Label("Heading Text", By.xpath('//h1[@id="sampleHeading"]'));
+    #headingText = new Label("Heading Text", By.xpath('//h1[@id="sampleHeading"]'));
     #driver = BrowserFactory.getInstance();
 
     constructor(){
@@ -14,15 +14,15 @@ class FramesForm extends BaseForm{
     }
 
     async switchToUpperFrame(){
-        await this.#driver.getIframe(await this.upperFrame.getElement());
+        await this.#driver.getIframe(this.#upperFrameLocator);
     }
 
     async switchToLowerFrame(){
-        await this.#driver.getIframe(await this.lowerFrame.getElement());
+        await this.#driver.getIframe(this.#lowerFrameLocator);
     }
 
     async getText(){
-        return await this.headingText.getText();
+        return await this.#headingText.getText();
     }    
 
     async switchToDeafultContent(){
