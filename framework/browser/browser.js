@@ -1,41 +1,16 @@
-const { Builder, until } = require('selenium-webdriver');
-const Chrome = require('selenium-webdriver/chrome');
-const Firefox = require('selenium-webdriver/firefox');
+const { BrowserFactory } = require('./browser-factory.js');
+const { until } = require('selenium-webdriver');
 const cfg = require('../../config.json');
 
 
-class BrowserFactory{
+class Browser{
     
     static getInstance(){
         if (!this.instance) {
             this.instance = this;
-            this.initDriver(cfg.browser.name);
+            this.driver = BrowserFactory.initDriver(cfg.browser.name);
         };
         return this.instance;
-    }
-
-    static initDriver(browser, args){
-        console.warn(`Initializing ${browser} driver...`)
-        switch(browser){
-            case "chrome": {
-                this.options = new Chrome.Options();
-                if (args) this.options = this.options.addArguments(args);
-                this.driver = new Builder()
-                .forBrowser(browser).setChromeOptions(this.options)
-                .build();
-                break;
-            };
-            case "firefox": {
-                this.options = new Firefox.Options();
-                if (args) this.options = this.options.addArguments(args);
-                 this.driver = new Builder()
-                 .forBrowser(browser).setFirefoxOptions(this.options)
-                 .build();
-                 break;
-            };
-            default:
-                throw new Error("Incorrect Browsername!");
-        };   
     }
 
     static async getTitle(){
@@ -142,5 +117,5 @@ class BrowserFactory{
 };
 
 module.exports = {
-    BrowserFactory
+    Browser
 };

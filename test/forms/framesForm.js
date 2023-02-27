@@ -1,13 +1,13 @@
 const { BaseForm } = require('../../framework/forms/forms.js');
 const { Label } = require('../../framework/elements/elements.js');
 const { By } = require('selenium-webdriver');
-const { BrowserFactory } = require('../../framework/browser/browser.js');
+const { Browser } = require('../../framework/browser/browser.js');
 
 class FramesForm extends BaseForm{
     #upperFrameLocator = By.id('frame1');
     #lowerFrameLocator = By.id('frame2');
     #headingText = new Label("Heading Text", By.xpath('//h1[@id="sampleHeading"]'));
-    #driver = BrowserFactory.getInstance();
+    #driver = Browser.getInstance();
 
     constructor(){
         super("Frames Form", By.xpath('//div[@class="main-header"][contains(text(), "Frames")]'));

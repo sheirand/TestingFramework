@@ -1,6 +1,6 @@
 require('chromedriver');
 require('geckodriver');
-const { BrowserFactory } = require('../framework/browser/browser.js');
+const { Browser } = require('../framework/browser/browser.js');
 const { AlertUtils } = require('../framework/utils/alert-utils.js');
 const { TestingUtils } = require('../framework/utils/testing-utils.js');
 const { Employee } = require('./models/models.js');
@@ -22,15 +22,15 @@ const testData = require('./test-data.json');
 describe("Testing https://demoqa.com/", () => {    
 
     beforeEach(() => {
-        BrowserFactory.getInstance();
-        BrowserFactory.getInstance().maximizeWindow();
+        Browser.getInstance();
+        Browser.getInstance().maximizeWindow();
     });
-    afterEach(() => BrowserFactory.getInstance().quit());
+    afterEach(() => Browser.getInstance().quit());
 
 
     it('Validation of Alerts', async () => {
 
-        await BrowserFactory.getInstance().goToUrl(cfg.testing.url);
+        await Browser.getInstance().goToUrl(cfg.testing.url);
 
         assert.isTrue(await mainPage.isPageOpened(), "MainPage is not opened");
         
@@ -79,7 +79,7 @@ describe("Testing https://demoqa.com/", () => {
 
     it('Validation of IFrame', async () => {
         
-        await BrowserFactory.getInstance().goToUrl(cfg.testing.url);
+        await Browser.getInstance().goToUrl(cfg.testing.url);
         
         assert.isTrue(await mainPage.isPageOpened(), "MainPage is not opened");
         
@@ -117,7 +117,7 @@ describe("Testing https://demoqa.com/", () => {
     jsonEmployees.forEach(({firstName, lastName, age, email, salary, department}) => {
         it(`Validation of Tables for employee: ${firstName} ${lastName}`, async () => {
             
-            await BrowserFactory.getInstance().goToUrl(cfg.testing.url);
+            await Browser.getInstance().goToUrl(cfg.testing.url);
             
             assert.isTrue(await mainPage.isPageOpened(), "MainPage is not opened");
             
@@ -158,7 +158,7 @@ describe("Testing https://demoqa.com/", () => {
 
     it('Validation of Handles', async () => {
         
-        await BrowserFactory.getInstance().goToUrl(cfg.testing.url);
+        await Browser.getInstance().goToUrl(cfg.testing.url);
         
         assert.isTrue(await mainPage.isPageOpened(), "Main Page is not opened");
         
@@ -167,14 +167,14 @@ describe("Testing https://demoqa.com/", () => {
         
         assert.isTrue(await browserWindowsForm.isPageOpened(), "Browser Windows Form is not opened");
         
-        let originalWindowHandle = await BrowserFactory.getInstance().getCurrentWindowHandle();
+        let originalWindowHandle = await Browser.getInstance().getCurrentWindowHandle();
         await browserWindowsForm.openNewTab();
-        await BrowserFactory.getInstance().switchToNewOpenedTab(originalWindowHandle);
+        await Browser.getInstance().switchToNewOpenedTab(originalWindowHandle);
         
         assert.isTrue(await sampleWindowForm.isPageOpened(), "Sample window form is not opened");
         
-        await BrowserFactory.getInstance().closeCurrentWindow();
-        await BrowserFactory.swithToWindow(originalWindowHandle);
+        await Browser.getInstance().closeCurrentWindow();
+        await Browser.swithToWindow(originalWindowHandle);
         
         assert.isTrue(await browserWindowsForm.isPageOpened(), "Browser Windows Form is not opened");
         
@@ -183,12 +183,12 @@ describe("Testing https://demoqa.com/", () => {
         assert.isTrue(await linksForm.isPageOpened(), "Links form is not opened");
         
         await linksForm.goToHomePage();
-        originalWindowHandle = await BrowserFactory.getInstance().getCurrentWindowHandle();
-        await BrowserFactory.getInstance().switchToNewOpenedTab(originalWindowHandle);        
+        originalWindowHandle = await Browser.getInstance().getCurrentWindowHandle();
+        await Browser.getInstance().switchToNewOpenedTab(originalWindowHandle);        
         
         assert.isTrue(await mainPage.isPageOpened(), "Main Page is not opened");
         
-        await BrowserFactory.swithToWindow(originalWindowHandle);
+        await Browser.swithToWindow(originalWindowHandle);
         
         assert.isTrue(await linksForm.isPageOpened(), "Link form is not opened");
     });

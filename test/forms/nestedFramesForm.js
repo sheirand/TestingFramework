@@ -1,13 +1,13 @@
 const { BaseForm } = require('../../framework/forms/forms.js');
 const { Label } = require('../../framework/elements/elements.js');
 const { By } = require('selenium-webdriver');
-const { BrowserFactory } = require('../../framework/browser/browser.js');
+const { Browser } = require('../../framework/browser/browser.js');
 
 class NestedFramesForm extends BaseForm{
     #outerFrameLocator = By.id("frame1");
     #innerFrameLocator = By.xpath('//iframe[contains(@srcdoc, "Child")]');
     #bodyText = new Label("Body Text", By.xpath("//html//body"));
-    #driver = BrowserFactory.getInstance();
+    #driver = Browser.getInstance();
 
     constructor(){
         super("Nested Frames Form", By.xpath('//div[@class="main-header"][contains(text(), "Nested Frames")]'));

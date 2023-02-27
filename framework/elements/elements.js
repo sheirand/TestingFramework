@@ -1,10 +1,10 @@
-const { BrowserFactory } = require('../browser/browser.js');
+const { Browser } = require('../browser/browser.js');
 const { By } = require('selenium-webdriver');
 
 
 class BaseElement{
 
-    static #driver = BrowserFactory.getInstance();
+    static #driver = Browser.getInstance();
 
     constructor(name, uniqLocator){
         this.name = name;
@@ -42,7 +42,7 @@ class Label extends BaseElement{
 };
 
 class WebTable extends BaseElement{
-    #driver = BrowserFactory.getInstance();
+    #driver = Browser.getInstance();
     #rowsLocator = By.xpath('//div[contains(@class, "rt-tr-group")]');
     #colsLocator = By.xpath('.//div[contains(@class, "rt-td")]');
     

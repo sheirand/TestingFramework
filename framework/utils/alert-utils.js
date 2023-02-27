@@ -1,8 +1,8 @@
-const { BrowserFactory } = require('../browser/browser.js');
+const { Browser } = require('../browser/browser.js');
 
 class AlertUtils{
 
-    static #driver = BrowserFactory.getInstance();
+    static #driver = Browser.getInstance();
 
     static async #getAlert(){
         let alert = await this.#driver.getAlert()

@@ -1,8 +1,8 @@
-const { BrowserFactory } = require('../browser/browser.js');
+const { Browser } = require('../browser/browser.js');
 
 
 class BaseForm{
-    static #driver = BrowserFactory.getInstance();
+    static #driver = Browser.getInstance();
     
     constructor(name, uniqLocator) {
         this.name = name,
