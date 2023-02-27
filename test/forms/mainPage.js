@@ -1,5 +1,5 @@
 const { BaseForm } = require('../../framework/forms/forms.js');
-const { Button } = require('../../framework/elements/elements.js');
+const { Button } = require('../../framework/elements/button.js');
 const { By } = require('selenium-webdriver');
 
 

@@ -1,5 +1,6 @@
 const { BaseForm } = require('../../framework/forms/forms.js');
-const { Button, TextField } = require('../../framework/elements/elements.js');
+const { Button } = require('../../framework/elements/button.js');
+const { TextField } = require('../../framework/elements/textfield.js');
 const { By } = require('selenium-webdriver');
 
 class RegistrationForm extends BaseForm{

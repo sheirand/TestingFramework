@@ -1,5 +1,6 @@
 const { BaseForm } = require('../../framework/forms/forms.js');
-const { Button, WebTable } = require('../../framework/elements/elements.js');
+const { Button } = require('../../framework/elements/button.js');
+const { WebTable } = require('../../framework/elements/webtable.js');
 const { By } = require('selenium-webdriver');
 const { Employee } = require('../models/models.js');
 const testData = require('../test-data.json');

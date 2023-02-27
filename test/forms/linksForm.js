@@ -1,6 +1,6 @@
 const { BaseForm } = require('../../framework/forms/forms.js');
 const { By } = require('selenium-webdriver');
-const { Label } = require('../../framework/elements/elements.js')
+const { Label } = require('../../framework/elements/label.js')
 
 
 class LinksForm extends BaseForm{
